@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database manager</title>
+</head>
+<body>
+    <ul class="items">
+        <li>Name</li>
+        <li>Quantity</li>
+        <li>Price</li>
+    </ul>
+    <div id="root">
+
+    </div>
+    <form action="http://localhost:4000/save" method="post">
+        name <input type="text" name="name" id="name" required>
+        quantity <input type="number" name="quantity" id="quantity" required>
+        Price <input type="number" name="price" id="price" required>
+        description <textarea name="description" id="description" cols="30" rows="5" required></textarea>
+        <button>add item</button>
+    </form>
+    <script>
+        const root=document.getElementById("root");
+        const createRecordList=(r)=>{
+            let ul=document.createElement("ul");
+            ul.setAttribute("class", "items");
+            for(let e of [r.name, r.quantity, r.price]){
+                let li=document.createElement("li");
+                li.append(e?e:"---");
+                li.description=r.description;
+                li.Id=r.id;
+                ul.append(li);
+            }
+            return ul;
+        }
+        
+            fetch("http://localhost:4000/all")
+            .then(d=>d.json())
+            .then(data=>{
+                data.forEach(r=>root.append(createRecordList(r)))
+            });
+    </script>
+    <style>
+        .items{
+            width: 80vw;
+            margin: 0 auto;
+        }
+        li{
+            display: inline-block;
+            width:25%;
+            margin: 0 auto;
+            border: 2px solid black;
+        }
+    </style>
+</body>
+</html>
